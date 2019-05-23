@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std;
+typedef struct
+{
+    int data;    //用来存放数塔的数值
+    int value;   //用来存放每一个阶段之后各个位置的value
+    int next;    //用来存放当前数字的下一个数字所在位置
+}Tower;
+int main()
+{
+    Tower **num;
+    int i,j,row,t1,t2,key=1;
+    cout<<"请输入数塔的层数:";
+    cin>>row;
+    num=new Tower*[row+1];
+    for(i=0;i<=row;i++)
+        num[i]=new Tower[row+1];
+    cout<<"请输入数塔:";
+    for(i=1;i<=row;i++)      //数塔赋初值
+        for(j=1;j<=i;j++)
+        {
+            cin>>num[i][j].data;
+            num[i][j].value=num[i][j].data;
+            num[i][j].next=0;
+        }
+    for(i=row-1;i>=1;i--)       //从第row-1行往上推
+        for(j=1;j<=i;j++)
+        {
+            t1=num[i][j].value+num[i+1][j].value;
+            t2=num[i][j].value+num[i+1][j+1].value;
+            if(t1>t2)
+            {
+                num[i][j].value=t1;num[i][j].next=j;
+            }
+            else
+            {
+                num[i][j].value=t2;num[i][j].next=j+1;
+            }
+        }
+   cout<<"最大值为:";
+   cout<<num[1][1].value<<endl<<"取值路径:"<<endl;
+   for(i=1;i<=row;i++)      //数塔赋初值
+    {
+         cout<<num[i][key].data<<" ";
+         key=num[i][key].next;
+    }
+    return 0;
+}
